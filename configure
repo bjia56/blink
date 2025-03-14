@@ -33,7 +33,8 @@ HOST_OS=$(uname -o 2>/dev/null)
 if [ "${HOST_ARCH}" = "amd64" ] ||
    [ "${HOST_ARCH}" = "x86_64" ] ||
    [ "${HOST_ARCH}" = "arm64" ] ||
-   [ "${HOST_ARCH}" = "aarch64" ]; then
+   [ "${HOST_ARCH}" = "aarch64" ] ||
+   [ "${HOST_ARCH}" = "evbarm" ]; then
   JIT_POSSIBLE=1
 else
   JIT_POSSIBLE=
