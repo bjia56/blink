@@ -3,7 +3,7 @@
 #include <sys/file.h>
 
 #if defined(sun) || defined(__sun)
-#include <unistd.h>
+#include <fcntl.h>
 #endif
 
 int main(int argc, char *argv[]) {
