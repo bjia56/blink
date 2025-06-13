@@ -3550,9 +3550,11 @@ static void GetOpts(int argc, char *argv[]) {
   FLAG_nolinear = !wantunsafe;
 }
 
+#ifdef HAVE_JIT
 static void AddPath_StartOp_Tui(P) {
   Jitter(m, rde, 0, 0, "qc", StartOp_Tui);
 }
+#endif
 
 static bool FileExists(const char *path) {
   return !VfsAccess(AT_FDCWD, path, F_OK, 0);
