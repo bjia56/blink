@@ -211,7 +211,7 @@ rm -f config.log
 run() {
   (
     printf '%s\n' "$*"
-    if timeout 10s nice "$@"; then
+    if timeout -s 9 60s nice "$@"; then
       exit 0
     else
       rc=$?
