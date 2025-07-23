@@ -201,6 +201,27 @@ else
   fi
 fi
 
+printf "checking for timeout... " >&2
+if command -v timeout >/dev/null; then
+  echo yes >&2
+  TIMEOUT=timeout
+elif [ -x o/tool/timeout ]; then
+  echo o/tool/timeout >&2
+  TIMEOUT=o/tool/timeout
+else
+  echo no >&2
+  printf "building tool/timeout.c... " >&2
+  f=$(mktemp "${TMPDIR}/timeout.XXXXXX")
+  if ${CC} -o "${f}" tool/timeout.c; then
+    echo ok >&2
+    mv -f "${f}" o/tool/timeout || exit
+    TIMEOUT=o/tool/timeout
+  else
+    echo "error: need the timeout command" >&2
+    exit 1
+  fi
+fi
+
 CONFIG=$(mktemp "${TMPDIR}/blink-config.h.XXXXXX")
 BUILD=$(mktemp "${TMPDIR}/blink-config.mk.XXXXXX")
 LOCK=$(mktemp "${TMPDIR}/blink-config.lock.XXXXXX")
@@ -211,7 +232,7 @@ rm -f config.log
 run() {
   (
     printf '%s\n' "$*"
-    if timeout -s 9 60s nice "$@"; then
+    if "${TIMEOUT}" -s 9 60 nice "$@"; then
       exit 0
     else
       rc=$?
