@@ -232,7 +232,7 @@ rm -f config.log
 run() {
   (
     printf '%s\n' "$*"
-    if "${TIMEOUT}" -s 9 60 nice "$@"; then
+    if "${TIMEOUT}" -s 9 300 nice "$@"; then
       exit 0
     else
       rc=$?
