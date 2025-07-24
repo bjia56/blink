@@ -24,6 +24,7 @@
 #define BLINK         "GenuineBlink"
 #define LINUX_        "Linux\0\0\0\0\0\0\0"
 #define FREEBSD_      "FreeBSD\0\0\0\0\0\0"
+#define MIDNIGHTBSD_  "MidnightBSD\0"
 #define NETBSD_       "NetBSD\0\0\0\0\0\0"
 #define OPENBSD_      "OpenBSD\0\0\0\0\0"
 #define DRAGONFLYBSD_ "DragonFlyBSD"
@@ -48,7 +49,11 @@
 #elif defined(__linux)
 #define OS LINUX_
 #elif defined(__FreeBSD__)
+# if defined(__MidnightBSD__)
+#define OS MIDNIGHTBSD_
+# else
 #define OS FREEBSD_
+# endif
 #elif defined(__NetBSD__)
 #define OS NETBSD_
 #elif defined(__OpenBSD__)
