@@ -2,7 +2,7 @@
 #include <string.h>
 #include <sys/file.h>
 
-#if defined(sun) || defined(__sun)
+#if defined(_AIX) || defined(sun) || defined(__sun)
 #include <errno.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -11,7 +11,7 @@
 int main(int argc, char *argv[]) {
   if (argc != 3) return 1;
 
-#if defined(sun) || defined(__sun)
+#if defined(_AIX) || defined(sun) || defined(__sun)
   if (!strcmp(argv[1], "-x")) {
     int fd;
     do {

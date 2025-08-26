@@ -35,6 +35,7 @@
 #define ILLUMOS_      "illumos\0\0\0\0\0\0"
 #define SOLARIS_      "Solaris\0\0\0\0\0\0"
 #define SUNOS_        "SunOS\0\0\0\0\0\0\0"
+#define AIX_          "AIX\0\0\0\0\0\0\0\0\0"
 #define UNKNOWN_      "Unknown\0\0\0\0\0\0"
 
 #ifdef __COSMOPOLITAN__
@@ -74,6 +75,8 @@
 # else
 #define OS SUNOS_
 # endif
+#elif defined(_AIX)
+#define OS AIX_
 #else
 #define OS UNKNOWN_
 #endif

@@ -307,7 +307,7 @@ hassstr() {
   fi
 }
 
-if [ "${HOST_SYSTEM}" = "SunOS" ]; then
+if [ "${HOST_SYSTEM}" = "SunOS" ] || [ "${HOST_SYSTEM}" = "AIX" ]; then
   replace() {
     "${FLOCK}" -x "${LOCK}.1"
     sed "s@$1@$2@" <"${CONFIG}" >"${CONFIG}.tmp" &&
@@ -473,6 +473,10 @@ if [ "${STATIC}" ]; then
     CFLAGS="-fno-pie ${CFLAGS}"
     LDFLAGS="-no-pie ${LDFLAGS}"
   fi
+fi
+
+if [ "${HOST_SYSTEM}" = "AIX" ]; then
+  LDFLAGS="-lbsd -lm ${LDFLAGS}"
 fi
 
 # position independent executables

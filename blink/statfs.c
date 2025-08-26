@@ -197,8 +197,13 @@ static void XlatStatvfsToLinux(struct statfs_linux *sf, const void *arg) {
   Write64(sf->bavail, vfs->f_bavail);
   Write64(sf->files, vfs->f_files);
   Write64(sf->ffree, vfs->f_ffree);
+#if defined(_AIX)
+  Write32(sf->fsid[0], vfs->f_fsid.val[0]);
+  Write32(sf->fsid[1], vfs->f_fsid.val[1]);
+#else
   Write32(sf->fsid[0], vfs->f_fsid);
   Write32(sf->fsid[1], (u64)vfs->f_fsid >> 32);
+#endif
   Write64(sf->flags, XlatStatvfsFlags(vfs->f_flag));
   Write64(sf->namelen, vfs->f_namemax);
 #endif

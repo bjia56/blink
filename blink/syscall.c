@@ -108,6 +108,12 @@
 #include <sys/mount.h>
 #endif
 
+#ifdef _AIX
+#ifndef MSG_DONTWAIT
+#define MSG_DONTWAIT MSG_NONBLOCK
+#endif
+#endif
+
 #ifdef SO_LINGER_SEC
 #define SO_LINGER_ SO_LINGER_SEC
 #else
@@ -181,6 +187,12 @@ static int my_tcsetwinsize(int fd, const struct winsize *ws) {
   return VfsIoctl(fd, TIOCSWINSZ, (void *)ws);
 }
 
+#ifdef _AIX
+static int poll_aix_compat(struct pollfd *p, nfds_t n, int f) {
+  return poll((void*)p, (ulong_t)n, (long int)f);
+}
+#endif
+
 const struct FdCb kFdCbHost = {
     .close = VfsClose,
 #ifdef __EMSCRIPTEN__
@@ -191,6 +203,8 @@ const struct FdCb kFdCbHost = {
     .writev = VfsWritev,
 #ifdef __EMSCRIPTEN__
     .poll = em_poll,
+#elif defined(_AIX)
+    .poll = poll_aix_compat,
 #else
     .poll = VfsPoll,
 #endif
@@ -4432,7 +4446,7 @@ static i32 Select(struct Machine *m,          //
   u64 oldmask_guest = 0;
   fd_set *readfds, *writefds, *exceptfds, *readyreadfds, *readywritefds,
       *readyexceptfds;
-#if defined(sun) || defined(__sun)
+#if defined(_AIX) || defined(sun) || defined(__sun)
   readfds = (fd_set*)malloc(sizeof(fd_set));
   writefds = (fd_set*)malloc(sizeof(fd_set));
   exceptfds = (fd_set*)malloc(sizeof(fd_set));
@@ -4590,7 +4604,7 @@ static i32 Select(struct Machine *m,          //
     }
   }
 #endif
-#if defined(sun) || defined(__sun)
+#if defined(_AIX) || defined(sun) || defined(__sun)
   free(readfds);
   free(writefds);
   free(exceptfds);
