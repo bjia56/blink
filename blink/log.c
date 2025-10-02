@@ -30,6 +30,7 @@
 
 #include "blink/assert.h"
 #include "blink/fspath.h"
+#include "blink/limits.h"
 #include "blink/machine.h"
 #include "blink/macros.h"
 #include "blink/thread.h"

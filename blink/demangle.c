@@ -27,6 +27,7 @@
 
 #include "blink/assert.h"
 #include "blink/debug.h"
+#include "blink/limits.h"
 #include "blink/log.h"
 #include "blink/machine.h"
 #include "blink/macros.h"

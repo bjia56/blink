@@ -58,6 +58,7 @@
 #include "blink/flags.h"
 #include "blink/fpu.h"
 #include "blink/high.h"
+#include "blink/limits.h"
 #include "blink/linux.h"
 #include "blink/loader.h"
 #include "blink/log.h"

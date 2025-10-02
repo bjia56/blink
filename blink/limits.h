@@ -4,6 +4,18 @@
 #include <stdint.h>
 #include <unistd.h>
 
+// Define missing limits, relevant on GNU Hurd
+#ifndef PATH_MAX
+#ifdef _PC_PATH_MAX
+#define PATH_MAX _PC_PATH_MAX
+#endif
+#endif
+#ifndef PIPE_BUF
+#ifdef _PC_PIPE_BUF
+#define PIPE_BUF _PC_PIPE_BUF
+#endif
+#endif
+
 #define NUMERIC_MAX(t)         \
   (((t) ~(t)0) > 1 ? (t) ~(t)0 \
                    : (t)((((uintmax_t)1) << (sizeof(t) * CHAR_BIT - 1)) - 1))

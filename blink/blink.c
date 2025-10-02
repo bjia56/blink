@@ -33,6 +33,7 @@
 #include "blink/endian.h"
 #include "blink/flag.h"
 #include "blink/jit.h"
+#include "blink/limits.h"
 #include "blink/loader.h"
 #include "blink/log.h"
 #include "blink/machine.h"

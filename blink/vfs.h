@@ -14,6 +14,7 @@
 #include <unistd.h>
 
 #include "blink/dll.h"
+#include "blink/limits.h"
 #include "blink/macros.h"
 #include "blink/overlays.h"
 #include "blink/preadv.h"

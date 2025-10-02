@@ -31,6 +31,7 @@
 #include "blink/errno.h"
 #include "blink/fspath.h"
 #include "blink/likely.h"
+#include "blink/limits.h"
 #include "blink/log.h"
 #include "blink/syscall.h"
 #include "blink/thompike.h"

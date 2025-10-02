@@ -20,6 +20,7 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "blink/limits.h"
 #include "blink/util.h"
 
 static char *g_startdir;
