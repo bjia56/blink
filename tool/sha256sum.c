@@ -31,9 +31,7 @@
 
 // Define missing limits, relevant on GNU Hurd
 #ifndef PATH_MAX
-#ifdef _PC_PATH_MAX
-#define PATH_MAX _PC_PATH_MAX
-#endif
+#define PATH_MAX 4096
 #endif
 
 #define PROG "sha256sum"
