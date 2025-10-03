@@ -1933,3 +1933,11 @@ int XlatWhence(int x) {
       return einval();
   }
 }
+
+int XlatMprotect(int x) {
+  int r = 0;
+  if (x & PROT_READ_LINUX) r |= PROT_READ;
+  if (x & PROT_WRITE_LINUX) r |= PROT_WRITE;
+  if (x & PROT_EXEC_LINUX) r |= PROT_EXEC;
+  return r;
+}

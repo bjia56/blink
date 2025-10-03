@@ -34,6 +34,7 @@ int XlatSocketProtocol(int);
 int XlatSocketType(int);
 int XlatWait(int);
 int XlatWhence(int);
+int XlatMprotect(int);
 
 int XlatSockaddrToHost(struct sockaddr_storage *, const struct sockaddr_linux *,
                        u32);

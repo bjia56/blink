@@ -1078,9 +1078,10 @@ static u64 Prot2Page(int prot) {
 }
 
 static int SysMprotect(struct Machine *m, i64 addr, u64 size, int prot) {
-  _Static_assert(PROT_READ == 1, "");
-  _Static_assert(PROT_WRITE == 2, "");
-  _Static_assert(PROT_EXEC == 4, "");
+#if PROT_READ != PROT_READ_LINUX || PROT_WRITE != PROT_WRITE_LINUX || \
+    PROT_EXEC != PROT_EXEC_LINUX
+  prot = XlatMprotect(prot);
+#endif
   int rc;
   int unsupported;
   if (size > NUMERIC_MAX(size_t)) return eoverflow();
