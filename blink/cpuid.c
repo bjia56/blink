@@ -36,6 +36,7 @@
 #define SOLARIS_      "Solaris\0\0\0\0\0\0"
 #define SUNOS_        "SunOS\0\0\0\0\0\0\0"
 #define AIX_          "AIX\0\0\0\0\0\0\0\0\0"
+#define HURD_         "Hurd\0\0\0\0\0\0\0\0"
 #define UNKNOWN_      "Unknown\0\0\0\0\0\0"
 
 #ifdef __COSMOPOLITAN__
@@ -77,6 +78,8 @@
 # endif
 #elif defined(_AIX)
 #define OS AIX_
+#elif defined(__gnu_hurd__)
+#define OS HURD_
 #else
 #define OS UNKNOWN_
 #endif
