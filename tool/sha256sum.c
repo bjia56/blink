@@ -29,6 +29,13 @@
 // this file should not have dependencies, because everything will be
 // re-downloaded if the o/tool/sha256sum artifact becomes invalidated
 
+// Define missing limits, relevant on GNU Hurd
+#ifndef PATH_MAX
+#ifdef _PC_PATH_MAX
+#define PATH_MAX _PC_PATH_MAX
+#endif
+#endif
+
 #define PROG "sha256sum"
 #define USAGE \
   "\
