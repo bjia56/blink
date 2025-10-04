@@ -43,12 +43,6 @@ int XlatMmapProt(int);
 #define XlatMmapProt(x) (x)
 #endif
 
-#if MAP_SHARED != MAP_SHARED_LINUX || MAP_PRIVATE != MAP_PRIVATE_LINUX
-int XlatMmapFlags(int);
-#else
-#define XlatMmapFlags(x) (x)
-#endif
-
 int XlatSockaddrToHost(struct sockaddr_storage *, const struct sockaddr_linux *,
                        u32);
 int XlatSockaddrToLinux(struct sockaddr_storage_linux *,

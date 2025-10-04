@@ -1178,7 +1178,6 @@ static i64 SysMmapImpl(struct Machine *m, i64 virt, i64 size, int prot,
   int oflags;
   bool fixedmap;
   i64 newautomap;
-  flags = XlatMmapFlags(flags);
   prot = XlatMmapProt(prot);
   if (!IsValidAddrSize(virt, size)) return einval();
   if (flags & MAP_GROWSDOWN_LINUX) return enotsup();
