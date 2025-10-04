@@ -3,6 +3,7 @@
 #include <netinet/in.h>
 #include <signal.h>
 #include <sys/ioctl.h>
+#include <sys/mman.h>
 #include <sys/resource.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
@@ -34,7 +35,19 @@ int XlatSocketProtocol(int);
 int XlatSocketType(int);
 int XlatWait(int);
 int XlatWhence(int);
-int XlatMprotect(int);
+
+#if PROT_READ != PROT_READ_LINUX || PROT_WRITE != PROT_WRITE_LINUX || \
+    PROT_EXEC != PROT_EXEC_LINUX
+int XlatMmapProt(int);
+#else
+#define XlatMmapProt(x) (x)
+#endif
+
+#if MAP_SHARED != MAP_SHARED_LINUX || MAP_PRIVATE != MAP_PRIVATE_LINUX
+int XlatMmapFlags(int);
+#else
+#define XlatMmapFlags(x) (x)
+#endif
 
 int XlatSockaddrToHost(struct sockaddr_storage *, const struct sockaddr_linux *,
                        u32);

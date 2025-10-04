@@ -1934,10 +1934,93 @@ int XlatWhence(int x) {
   }
 }
 
-int XlatMprotect(int x) {
+#ifndef XlatMmapProt
+int XlatMmapProt(int x) {
   int r = 0;
   if (x & PROT_READ_LINUX) r |= PROT_READ;
   if (x & PROT_WRITE_LINUX) r |= PROT_WRITE;
   if (x & PROT_EXEC_LINUX) r |= PROT_EXEC;
   return r;
 }
+#endif
+
+#ifndef XlatMmapFlags
+int XlatMmapFlags(int x) {
+  int r = 0;
+
+  // Translate mapping type (must have exactly one)
+  if ((x & MAP_TYPE_LINUX) == MAP_SHARED_LINUX) {
+    r |= MAP_SHARED;
+  } else if ((x & MAP_TYPE_LINUX) == MAP_PRIVATE_LINUX) {
+    r |= MAP_PRIVATE;
+#ifdef MAP_FILE
+  } else if ((x & MAP_TYPE_LINUX) == MAP_FILE_LINUX) {
+    r |= MAP_FILE;
+#endif
+  } else {
+    return einval();
+  }
+  x &= ~MAP_TYPE_LINUX;
+
+  // Translate flags
+  if (x & MAP_FIXED_LINUX) r |= MAP_FIXED, x &= ~MAP_FIXED_LINUX;
+#ifdef MAP_ANONYMOUS
+  if (x & MAP_ANONYMOUS_LINUX) r |= MAP_ANONYMOUS, x &= ~MAP_ANONYMOUS_LINUX;
+#else
+  x &= ~MAP_ANONYMOUS_LINUX;
+#endif
+#ifdef MAP_GROWSDOWN
+  if (x & MAP_GROWSDOWN_LINUX) r |= MAP_GROWSDOWN, x &= ~MAP_GROWSDOWN_LINUX;
+#else
+  x &= ~MAP_GROWSDOWN_LINUX;
+#endif
+#ifdef MAP_NORESERVE
+  if (x & MAP_NORESERVE_LINUX) r |= MAP_NORESERVE, x &= ~MAP_NORESERVE_LINUX;
+#else
+  x &= ~MAP_NORESERVE_LINUX;
+#endif
+#ifdef MAP_POPULATE
+  if (x & MAP_POPULATE_LINUX) r |= MAP_POPULATE, x &= ~MAP_POPULATE_LINUX;
+#else
+  x &= ~MAP_POPULATE_LINUX;
+#endif
+#ifdef MAP_NONBLOCK
+  if (x & MAP_NONBLOCK_LINUX) r |= MAP_NONBLOCK, x &= ~MAP_NONBLOCK_LINUX;
+#else
+  x &= ~MAP_NONBLOCK_LINUX;
+#endif
+#ifdef MAP_STACK
+  if (x & MAP_STACK_LINUX) r |= MAP_STACK, x &= ~MAP_STACK_LINUX;
+#else
+  x &= ~MAP_STACK_LINUX;
+#endif
+#ifdef MAP_HUGETLB
+  if (x & MAP_HUGETLB_LINUX) r |= MAP_HUGETLB, x &= ~MAP_HUGETLB_LINUX;
+#else
+  x &= ~MAP_HUGETLB_LINUX;
+#endif
+#ifdef MAP_SYNC
+  if (x & MAP_SYNC_LINUX) r |= MAP_SYNC, x &= ~MAP_SYNC_LINUX;
+#else
+  x &= ~MAP_SYNC_LINUX;
+#endif
+#ifdef MAP_FIXED_NOREPLACE
+  if (x & MAP_FIXED_NOREPLACE_LINUX) r |= MAP_FIXED_NOREPLACE, x &= ~MAP_FIXED_NOREPLACE_LINUX;
+#else
+  x &= ~MAP_FIXED_NOREPLACE_LINUX;
+#endif
+#ifdef MAP_UNINITIALIZED
+  if (x & MAP_UNINITIALIZED_LINUX) r |= MAP_UNINITIALIZED, x &= ~MAP_UNINITIALIZED_LINUX;
+#else
+  x &= ~MAP_UNINITIALIZED_LINUX;
+#endif
+
+  // Check for unsupported flags
+  if (x) {
+    LOGF("unsupported mmap flags: %#x", x);
+    return einval();
+  }
+
+  return r;
+}
+#endif

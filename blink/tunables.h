@@ -19,6 +19,8 @@
 
 #if CAN_64BIT && defined(__APPLE__)
 #define kSkew 0x088800000000
+#elif defined(__gnu_hurd__)
+#define kSkew 0x088800000000
 #else
 #define kSkew 0x000000000000
 #endif

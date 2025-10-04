@@ -1078,10 +1078,7 @@ static u64 Prot2Page(int prot) {
 }
 
 static int SysMprotect(struct Machine *m, i64 addr, u64 size, int prot) {
-#if PROT_READ != PROT_READ_LINUX || PROT_WRITE != PROT_WRITE_LINUX || \
-    PROT_EXEC != PROT_EXEC_LINUX
-  prot = XlatMprotect(prot);
-#endif
+  prot = XlatMmapProt(prot);
   int rc;
   int unsupported;
   if (size > NUMERIC_MAX(size_t)) return eoverflow();
@@ -1181,6 +1178,8 @@ static i64 SysMmapImpl(struct Machine *m, i64 virt, i64 size, int prot,
   int oflags;
   bool fixedmap;
   i64 newautomap;
+  flags = XlatMmapFlags(flags);
+  prot = XlatMmapProt(prot);
   if (!IsValidAddrSize(virt, size)) return einval();
   if (flags & MAP_GROWSDOWN_LINUX) return enotsup();
   if ((key = Prot2Page(prot)) == (u64)-1) return einval();
