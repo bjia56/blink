@@ -17,7 +17,9 @@
                    : (t)((((uintmax_t)1) << (sizeof(t) * CHAR_BIT - 1)) - 1))
 
 static inline long GetIovMax(void) {
-#ifdef IOV_MAX
+#if defined(__gnu_hurd__)
+  return 16;
+#elif defined(IOV_MAX)
   return IOV_MAX;
 #elif defined(_SC_IOV_MAX)
   return sysconf(_SC_IOV_MAX);
