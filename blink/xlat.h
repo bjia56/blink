@@ -36,6 +36,12 @@ int XlatSocketType(int);
 int XlatWait(int);
 int XlatWhence(int);
 
+#ifdef __gnu_hurd__
+#define XlatPipeFlags(x) (0)
+#else
+#define XlatPipeFlags(x) (XlatOpenFlags(x))
+#endif
+
 #if PROT_READ != PROT_READ_LINUX || PROT_WRITE != PROT_WRITE_LINUX || \
     PROT_EXEC != PROT_EXEC_LINUX
 int XlatMmapProt(int);

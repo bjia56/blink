@@ -321,6 +321,16 @@ static bool IsMidnightbsdExecutable(Elf64_Ehdr_ *ehdr, size_t size) {
   return false;
 }
 
+static bool IsHurdExecutable(Elf64_Ehdr_ *ehdr, size_t size) {
+#ifdef __gnu_hurd__
+  const char *name = GetElfOsNameInNoteTag(ehdr, size);
+  if (name && !strcmp(name, "GNU")) {
+    return true;
+  }
+#endif
+  return false;
+}
+
 static bool IsShebangExecutable(void *image, size_t size) {
   return size >= 2 && ((char *)image)[0] == '#' && ((char *)image)[1] == '!';
 }
@@ -380,6 +390,10 @@ bool IsSupportedExecutable(const char *path, void *image, size_t size) {
     }
     if (IsMidnightbsdExecutable(ehdr, size)) {
       ExplainWhyItCantBeEmulated(path, "ELF is MidnightBSD executable");
+      return false;
+    }
+    if (IsHurdExecutable(ehdr, size)) {
+      ExplainWhyItCantBeEmulated(path, "ELF is GNU/Hurd executable");
       return false;
     }
 #if defined(__ELF__) && !defined(__linux)

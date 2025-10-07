@@ -52,7 +52,7 @@ int SysPipe2(struct Machine *m, i64 pipefds_addr, i32 flags) {
   }
   if (!(lim = GetFileDescriptorLimit(m->system))) return emfile();
 #ifdef HAVE_PIPE2
-  if ((rc = VfsPipe2(fds, (oflags = XlatOpenFlags(flags)))) != -1) {
+  if ((rc = VfsPipe2(fds, (oflags = XlatPipeFlags(flags)))) != -1) {
 #else
   if (flags) LOCK(&m->system->exec_lock);
   if (VfsPipe(fds) != -1) {
